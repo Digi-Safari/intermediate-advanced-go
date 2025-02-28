@@ -14,8 +14,8 @@ This course covers:
 - Advanced Structs and Composition
 - Interfaces and Polymorphism
 - Advanced Data Structures and Algorithm
+- Concurrency Patterns and Best Practice
 - Building Robust Network Applications
-- Concurrency Patterns and Best Practices
 - Comprehensive Testing in Go
 - Profiling and Performance Optimization
 
