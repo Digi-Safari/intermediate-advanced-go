@@ -44,7 +44,6 @@ func greet() {
 	}
 
 	fmt.Println(name, age, marks)
-	strconv.ParseFloat()
 
 }
 
