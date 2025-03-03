@@ -14,7 +14,7 @@ func main() {
 	var b []int // default is nil
 	fmt.Println(b)
 	if b == nil {
-		fmt.Println("it is nil slice")
+		fmt.Println("it is nil slice....")
 	}
 	fmt.Printf("%#v", b)
 }
