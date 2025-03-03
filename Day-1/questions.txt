@@ -19,3 +19,6 @@ q2. Create a stringops package with three files. The package should export one f
     Internal Function: toUpperCase(s string) string
     File 3: trim.go
     Internal Function: trimSpace(s string) string
+
+q3. Create a function that converts a string to float64, if it is successful it returns the value otherwise an error
+strconv.ParseFloat()
