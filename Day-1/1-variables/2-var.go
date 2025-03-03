@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 func main() {
-
+	//var firstName string // camelCase for variable naming
 	// every types have a default value
 	var a int // int default is 0
 	var b string = "ajay"
