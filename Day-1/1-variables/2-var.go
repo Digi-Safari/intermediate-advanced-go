@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main() {
 	//var firstName string // camelCase for variable naming
@@ -19,4 +22,5 @@ func main() {
 		fmt.Println(d)
 	}
 	fmt.Println(a, b, c, d)
+	strings.TrimSpace()
 }
