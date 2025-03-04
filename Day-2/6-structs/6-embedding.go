@@ -44,5 +44,6 @@ func main() {
 	b.AddBook("book1")
 	b.Print() // print method of the author type
 	b.UpdateEmail("rahul@yahoo.com")
-	b.User.Print() // print method of the user type
+	b.Print() // print method of the user type
+
 }
