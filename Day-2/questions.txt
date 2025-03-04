@@ -15,3 +15,28 @@ q2. Create a struct (Author)
         Create a function that accepts the struct and append values to the book slice
 
         Create a function that would accept the Books field, not the struct and append some more books
+
+q3. Create the following directory structure
+                app-/
+                    ├──stores/
+                    │  └── store.go
+                       └── models.go // to store domain structs
+                    │    ├── mysql/
+                    │    │   └── mysql.go
+                    │    ├── postgres/
+                    │       └── postgres.go
+                    └── main.go
+                    ├── go.mod
+
+        In mysql.go create a Conn struct which stores db connection in string form
+        Create three methods over Conn struct (Create(user) error, Update(name) error, Delete(id) error
+        //Note:- return nil for the errors, assume no error would happen
+        //For now add simple print statement without doing any actual work
+
+        In postgres.go repeat the same steps as we did in mysql.go
+
+        In store.go
+            Create an interface that postgres and mysql package can implement
+
+        In main.go
+            Call postgres and mysql package methods using interface variable
