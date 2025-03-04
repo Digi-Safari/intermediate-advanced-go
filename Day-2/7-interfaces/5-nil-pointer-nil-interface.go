@@ -20,6 +20,7 @@ func (c *conn) ReadAll() {
 		log.Println("c can't be nil")
 		return
 	}
+
 	c.data = "some data"
 	fmt.Println("read all the values from the db", c.data)
 }
