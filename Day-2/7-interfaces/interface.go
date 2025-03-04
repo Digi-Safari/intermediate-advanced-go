@@ -15,7 +15,13 @@ import (
 // interface is an abstract type
 
 type Reader interface {
+
+	// interfaces are automatically implemented if method signature is same as of interfaces
+	// only method signatures could be added to an interface
+
 	Read(b []byte) (int, error)
+
+	//write(b []byte) (int, error) // all methods must be implemented to implement the interface
 }
 
 type File struct {
@@ -37,6 +43,11 @@ func (i IO) Read(b []byte) (int, error) {
 }
 
 func DoReading(r Reader) {
+
+	//piece of code changes its behavior depending on the
+	//// concrete data it’s operating on
+	// if file is passed Read would be called from the file struct,
+	//or if Io is passed Read would be called from IO
 	n, err := r.Read(nil)
 	_, _ = n, err
 	fmt.Printf("%T\n", r)
