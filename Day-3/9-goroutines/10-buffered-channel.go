@@ -21,6 +21,7 @@ func main() {
 			ch <- i
 			fmt.Println("sent", i)
 		}
+
 	}()
 
 	go func() {
