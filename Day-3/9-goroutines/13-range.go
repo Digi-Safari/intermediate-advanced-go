@@ -14,7 +14,6 @@ func main() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-
 		for i := 1; i <= 5; i++ {
 			wgWorker.Add(1)
 
@@ -27,13 +26,13 @@ func main() {
 
 		}
 
-	}()
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			wgWorker.Wait()
+			close(ch)
+		}()
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		wgWorker.Wait()
-		close(ch)
 	}()
 
 	wg.Add(1)
