@@ -11,7 +11,8 @@ func main() {
 	// using waitgroup keep track of goroutines
 	wg := new(sync.WaitGroup)
 
-	wg.Add(1)
+	// waitgroup counter represents number of goroutine we are running
+	wg.Add(1) // add 1 to the counter
 	go func() {
 		time.Sleep(1 * time.Second)
 		fmt.Println("hello world")
