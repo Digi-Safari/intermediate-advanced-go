@@ -10,13 +10,15 @@ func main() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		helloWorld("Hello")
+		s := helloWorld("Hello")
+		fmt.Println(s)
 	}()
 	helloWorld("Hello")
 	wg.Wait()
 
 }
 
-func helloWorld(s string) {
+func helloWorld(s string) string {
 	fmt.Println(s)
+	return s
 }
