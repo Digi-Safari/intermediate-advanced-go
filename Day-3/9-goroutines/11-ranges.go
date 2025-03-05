@@ -16,7 +16,6 @@ func main() {
 		for i := 0; i < 5; i++ {
 			ch <- i
 		}
-
 		close(ch) // sends a signal to stop the range
 		// close signal range that no more values be sent and it can stop after receiving remaining values
 		// once the channel is closed, we can't send more values to it
