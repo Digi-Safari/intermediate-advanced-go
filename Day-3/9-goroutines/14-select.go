@@ -62,6 +62,8 @@ func main() {
 		}
 	}()
 
+	// don't put this goroutine before adding counter to wgWorkers
+	// there is a chance that worker wait group value is not correct and we send close signal early
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
