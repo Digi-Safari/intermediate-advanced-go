@@ -3,33 +3,35 @@ package main
 import (
 	"fmt"
 	"sync"
-	"time"
 )
 
 // use select with unbuffered channels, when working with a fanout pattern
+// don't use this with buffered channels
+// if you want to use a buffered channel, then use range to receive the remaining value
 
 func main() {
 	// select is used when we want to listen or send values to over a multiple channel
 	wg := new(sync.WaitGroup)
+	wgWorker := new(sync.WaitGroup)
 	get := make(chan string)
 	post := make(chan string)
 	put := make(chan string)
 	done := make(chan struct{})
 
-	wg.Add(3)
+	wgWorker.Add(3)
 	go func() {
-		defer wg.Done()
-		time.Sleep(2 * time.Second)
+		defer wgWorker.Done()
 		get <- "get"
+		fmt.Println("sent get")
 	}()
 
 	go func() {
-		defer wg.Done()
-		time.Sleep(1 * time.Second)
+		defer wgWorker.Done()
 		post <- "post"
+
 	}()
 	go func() {
-		defer wg.Done()
+		defer wgWorker.Done()
 		put <- "put"
 		put <- "put 1"
 	}()
@@ -38,7 +40,9 @@ func main() {
 	//fmt.Println(<-post)
 	//fmt.Println(<-put)
 
+	wg.Add(1)
 	go func() {
+		defer wg.Done()
 		for {
 			//whichever case is not blocking exec that first
 			//whichever case is ready first, exec that.
@@ -57,6 +61,14 @@ func main() {
 			}
 		}
 	}()
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		wgWorker.Wait()
+		close(done)
+	}()
+
 	wg.Wait()
 
 }
