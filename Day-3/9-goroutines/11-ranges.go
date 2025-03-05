@@ -26,7 +26,7 @@ func main() {
 	go func() {
 		defer wg.Done()
 		time.Sleep(1 * time.Second)
-		for v := range ch {
+		for v := range ch { // it would run infinitely, channel needs to be closed to stop this range
 			fmt.Println(v)
 		}
 	}()
