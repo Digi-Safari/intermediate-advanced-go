@@ -9,7 +9,7 @@ q2. Follow up to the previous question
     This goroutine prints some stuff on the screen and sleeps for 100ms
     Make sure you wait for every goroutine to finish and end everything gracefully
 
-
+ch chan int,
 q3. Create 4 functions
     Add(int,int),Sub(int,int),Divide(int,int), CollectResults()
     Add,Sub,Divide do their operations and send value to an unbuffered channel
