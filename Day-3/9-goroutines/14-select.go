@@ -14,6 +14,8 @@ func main() {
 	get := make(chan string)
 	post := make(chan string)
 	put := make(chan string)
+	done := make(chan struct{})
+
 	wg.Add(3)
 	go func() {
 		defer wg.Done()
@@ -36,21 +38,25 @@ func main() {
 	//fmt.Println(<-post)
 	//fmt.Println(<-put)
 
-	for i := 0; i < 3; i++ {
+	go func() {
+		for {
+			//whichever case is not blocking exec that first
+			//whichever case is ready first, exec that.
+			// possible cases are chan recv , send , default
+			select {
+			case msg := <-get:
+				fmt.Println(msg)
+			case msg := <-post:
+				fmt.Println(msg)
+			case msg := <-put:
+				fmt.Println(msg)
+			case <-done:
+				fmt.Println("all the values are processed")
+				return
 
-		//whichever case is not blocking exec that first
-		//whichever case is ready first, exec that.
-		// possible cases are chan recv , send , default
-		select {
-		case msg := <-get:
-			fmt.Println(msg)
-		case msg := <-post:
-			fmt.Println(msg)
-		case msg := <-put:
-			fmt.Println(msg)
-
+			}
 		}
-	}
+	}()
 	wg.Wait()
 
 }
