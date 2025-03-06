@@ -12,7 +12,7 @@ func main() {
 	// Context is an interface, Background method returns an implementation of that interface
 	ctx := context.Background()
 
-	ctx, cancel := context.WithTimeout(ctx, time.Second*1)
+	ctx, cancel := context.WithTimeout(ctx, time.Second*10)
 	defer cancel() // clean up the resources taken up by the context
 	doSomething(ctx, wg)
 	wg.Wait()

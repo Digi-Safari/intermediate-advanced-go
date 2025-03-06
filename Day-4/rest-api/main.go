@@ -6,10 +6,12 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"rest-api/handlers"
 	"time"
 )
 
 func main() {
+	setupSlog()
 	err := startApp()
 	if err != nil {
 		panic(err)
@@ -22,6 +24,7 @@ func startApp() error {
 		ReadTimeout:  8000 * time.Second,
 		WriteTimeout: 800 * time.Second,
 		IdleTimeout:  800 * time.Second,
+		Handler:      handlers.API(),
 	}
 
 	// channel to store any errors while setting up the service
@@ -31,7 +34,7 @@ func startApp() error {
 	}()
 
 	//shutdown channel intercepts ctrl+c signals
-	shutdown := make(chan os.Signal)
+	shutdown := make(chan os.Signal, 1)
 	signal.Notify(shutdown, os.Interrupt)
 
 	select {
