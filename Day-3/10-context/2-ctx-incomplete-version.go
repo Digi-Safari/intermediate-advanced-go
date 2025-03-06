@@ -3,18 +3,30 @@ package main
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 )
 
 func main() {
 	ctx := context.Background()
+	wg := new(sync.WaitGroup)
 	ch := make(chan int)
 	ctx, cancel := context.WithTimeout(ctx, time.Second*1)
 	defer cancel()
 
+	wg.Add(1)
 	go func() {
+		defer wg.Done()
 		x := slowFuncV2()
-		ch <- x
+		select {
+		case <-ctx.Done():
+			fmt.Println(ctx.Err())
+			fmt.Println("reversing the effect of slowV2")
+			return
+
+		case ch <- x:
+			fmt.Println("sent the value over the channel")
+		}
 
 	}()
 	func() {
@@ -30,6 +42,7 @@ func main() {
 	}()
 
 	fmt.Println("starting doing other things, no longer waiting for other goroutine to finish")
+	wg.Wait()
 }
 
 func slowFuncV2() int {
