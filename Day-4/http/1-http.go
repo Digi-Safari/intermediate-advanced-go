@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -9,6 +10,7 @@ func main() {
 
 	http.HandleFunc("/home", Home)
 	http.HandleFunc("/json", sendJsonResponse)
+
 	// if handler is nil
 	// it would use default route matcher available from standard lib, also known as DefaultServeMux
 	// http.ListenAndServe blocks forever until its killed
@@ -22,6 +24,15 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	//w http.ResponseWriter, is used to write resp to the client
 	// http.Request// anything user send us would be in the request struct
 	//fmt.Fprintln(w, "Home")
+	//log.Fatalln("fatal in home") // don't use this until you have intention to kill the app
+	//panic("something going on wrong") // http service can recover from the panic if it happens
+	go func() {
+
+		fmt.Println("doing some internal jobs when home is called")
+		// this panic below would quit our service
+		// if we don't want this to happen then we have to write manual recovery functionality
+		//panic("goroutine panic") //
+	}()
 	w.Write([]byte("Hello World"))
 
 }
