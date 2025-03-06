@@ -32,4 +32,5 @@ func RequestIdMid(next http.HandlerFunc) http.HandlerFunc {
 
 func Hello(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hello")
+	fmt.Println(reqId)
 }
