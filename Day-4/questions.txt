@@ -35,3 +35,4 @@ Tasks to perform:
                        use below technique to convert data to json and send responses
                        json.NewEncoder(w).Encode(variableName)
 
+//localhost:8080/find?user_name=123
