@@ -1,1 +1,6 @@
 go mod init moduleName
+
+go mod tidy
+// it will download all the deps for a project, very helpful when downloading any proj from the internet
+// it would remove any unused deps
+// it would fix module issues
