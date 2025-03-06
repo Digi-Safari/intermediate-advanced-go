@@ -12,6 +12,7 @@ import (
 //
 // Middleware Examples: logging, Panic Recovery, Auth, Authorize, GenerateReqID, Fetching Headers
 func main() {
+
 	http.HandleFunc("/home", Mid(Mid2(home)))
 	panic(http.ListenAndServe(":8080", nil))
 
