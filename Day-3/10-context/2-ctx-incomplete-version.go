@@ -16,17 +16,13 @@ func main() {
 
 	wg.Add(1)
 	go func() {
+		// this goroutine would deadlock if the receiver goroutine has already moved on because of time out
+		// use select for sending here as well to make sure we send the values in case of receiver is present
 		defer wg.Done()
 		x := slowFuncV2()
-		select {
-		case <-ctx.Done():
-			fmt.Println(ctx.Err())
-			fmt.Println("reversing the effect of slowV2")
-			return
-
-		case ch <- x:
-			fmt.Println("sent the value over the channel")
-		}
+		// in this case slowV2 is still running and it would not stop
+		ch <- x
+		fmt.Println("sent the value over the channel")
 
 	}()
 	func() {
