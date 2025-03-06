@@ -3,9 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/golang-jwt/jwt/v5"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
+	"rest-api/auth"
 	"rest-api/handlers"
 	"time"
 )
@@ -19,6 +22,25 @@ func main() {
 }
 
 func startApp() error {
+	// =========================================================================
+	// Initialize authentication support
+	slog.Info("main : Started : Initializing authentication support")
+
+	publicPEM, err := os.ReadFile("pubkey.pem")
+	if err != nil {
+		return fmt.Errorf("reading auth public key %w", err)
+	}
+
+	publicKey, err := jwt.ParseRSAPublicKeyFromPEM(publicPEM)
+	if err != nil {
+		return fmt.Errorf("parsing auth public key %w", err)
+	}
+
+	a, err := auth.NewAuth(publicKey)
+	if err != nil {
+		return err
+	}
+	_ = a // this needs to be changed
 	api := http.Server{
 		Addr:         ":8080",
 		ReadTimeout:  8000 * time.Second,

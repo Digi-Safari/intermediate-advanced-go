@@ -1,0 +1,33 @@
+package auth
+
+import (
+	"crypto/rsa"
+	"errors"
+	"github.com/golang-jwt/jwt/v5"
+)
+
+type Auth struct {
+	publicKey *rsa.PublicKey
+}
+
+func NewAuth(publicKey *rsa.PublicKey) (*Auth, error) {
+	if publicKey == nil {
+		return nil, errors.New("public key is nil")
+	}
+	return &Auth{publicKey: publicKey}, nil
+}
+
+func (a *Auth) ValidateToken(token string) (jwt.RegisteredClaims, error) {
+
+	var c jwt.RegisteredClaims
+	tkn, err := jwt.ParseWithClaims(token, &c, func(token *jwt.Token) (interface{}, error) {
+		return a.publicKey, nil
+	})
+	if err != nil {
+		return jwt.RegisteredClaims{}, err
+	}
+	if !tkn.Valid {
+		return jwt.RegisteredClaims{}, err
+	}
+	return c, nil
+}
