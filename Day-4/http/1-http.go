@@ -37,7 +37,13 @@ func Home(w http.ResponseWriter, r *http.Request) {
 		//panic("goroutine panic") //
 	}()
 	time.Sleep(5 * time.Second)
-	// don't send the response if the ctx is cancelled
+	select {
+	case <-ctx.Done():
+		fmt.Println("context cancelled", ctx.Err())
+		return
+	default:
+	}
+	// don't send the response if the ctx is canceled
 	w.Write([]byte("Hello World"))
 
 }

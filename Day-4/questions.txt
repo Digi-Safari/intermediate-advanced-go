@@ -1,0 +1,37 @@
+q1.
+Create a new Go project small-app
+    small-app/
+        ├── go.mod
+        ├── cmd/
+        │   ├── main.go
+        │   └── routes.go
+        ├── models/
+        │   ├── models.go
+        │   └── users.go
+        └── handlers/
+            └── handlers.go
+
+Tasks to perform:
+    cmd package
+        main.go ->
+                   ,call setupRoutes() func,
+                   start the server
+
+        routes.go -> Create setupRoutes() that register one route for the app
+                    /find
+                    Route Details ->  GET     /find?user_id={id}       # Get a user by ID
+                    Hint: Use this to fetch the query // r.URL.Query().Get("user_id")
+    models package
+        models.go -> create a struct that stores userDetails like name, email, password
+                     create a preintialized global map that stores user details
+                     For example :- map[int]User  , Note userId is int
+        users.go -> write function named as GetUser() bool
+                    that checks if a user is present in the map or not.
+
+    handlers package
+        handlers.go -> create a handler function that calls GetUser() from the models package
+                       In handlerfunc write a basic check to make sure id received is a proper int
+                       Note: Send Json based responses
+                       use below technique to convert data to json and send responses
+                       json.NewEncoder(w).Encode(variableName)
+
