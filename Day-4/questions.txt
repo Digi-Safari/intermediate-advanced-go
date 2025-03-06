@@ -25,7 +25,7 @@ Tasks to perform:
         models.go -> create a struct that stores userDetails like name, email, password
                      create a preintialized global map that stores user details
                      For example :- map[int]User  , Note userId is int
-        users.go -> write function named as GetUser() bool
+        users.go -> write function named as GetUser() (user,bool)
                     that checks if a user is present in the map or not.
 
     handlers package
