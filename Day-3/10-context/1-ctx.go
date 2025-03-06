@@ -25,6 +25,7 @@ func doSomething(ctx context.Context, wg *sync.WaitGroup) {
 	go func() {
 		defer wg.Done()
 		rec := slowFunc()
+		ch <- rec
 		select {
 		case ch <- rec:
 			fmt.Println("result sent to channel")
