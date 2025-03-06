@@ -24,6 +24,7 @@ func main() {
 			fmt.Println("context done", ctx.Err())
 			return
 		case x := <-ch:
+			// if received value in time, this case evaluates
 			fmt.Println("result received from channel", x)
 		}
 	}()
