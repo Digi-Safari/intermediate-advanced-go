@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -26,6 +27,8 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprintln(w, "Home")
 	//log.Fatalln("fatal in home") // don't use this until you have intention to kill the app
 	//panic("something going on wrong") // http service can recover from the panic if it happens
+	ctx := r.Context()
+
 	go func() {
 
 		fmt.Println("doing some internal jobs when home is called")
@@ -33,6 +36,8 @@ func Home(w http.ResponseWriter, r *http.Request) {
 		// if we don't want this to happen then we have to write manual recovery functionality
 		//panic("goroutine panic") //
 	}()
+	time.Sleep(5 * time.Second)
+	// don't send the response if the ctx is cancelled
 	w.Write([]byte("Hello World"))
 
 }
