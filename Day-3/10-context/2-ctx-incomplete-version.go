@@ -20,6 +20,7 @@ func main() {
 	func() {
 		select {
 		case <-ctx.Done():
+			// listen over the done channel and if the time is up this case evaluates
 			fmt.Println("context done", ctx.Err())
 			return
 		case x := <-ch:
