@@ -21,7 +21,7 @@ func main() {
 	}
 	display("hello", 10, true)
 	s := []any{"book1", "book2", "book3"}
-	display("Name", s...) // unpack the slice and send the individual values to the display func
+	display("FirstName", s...) // unpack the slice and send the individual values to the display func
 	display("John")
 
 }

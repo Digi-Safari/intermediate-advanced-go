@@ -13,7 +13,7 @@ func (a *Author) AddBook(book string) {
 }
 
 func (a *Author) PrintDetails() {
-	fmt.Printf("Author Name: %s\nBooks: %v\n", a.Name, a.Books)
+	fmt.Printf("Author FirstName: %s\nBooks: %v\n", a.Name, a.Books)
 }
 
 // AppendBooksToAuthor accepts the Author struct and appends values to the Books slice

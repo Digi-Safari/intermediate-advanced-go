@@ -27,6 +27,7 @@ func Slow(ctx context.Context, input string) (int, error) {
 		return 0, err
 	}
 	time.Sleep(1 * time.Second)
+	// checking if timeout happened, if yes then we would not return error
 	select {
 	case <-ctx.Done():
 		return 0, ctx.Err()
