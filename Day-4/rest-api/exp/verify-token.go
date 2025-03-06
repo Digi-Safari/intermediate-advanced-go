@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"log"
 	"os"
@@ -22,4 +23,22 @@ func main() {
 		log.Fatalln(err)
 	}
 
+	var claims struct {
+		jwt.RegisteredClaims
+		Roles []string `json:"roles"`
+	}
+
+	token, err := jwt.ParseWithClaims(token, &claims, func(token *jwt.Token) (interface{}, error) {
+		return publicKey, nil
+	})
+
+	if err != nil {
+		log.Println("parsing token", err)
+		return
+	}
+	if !token.Valid {
+		log.Println("token is not valid")
+		return
+	}
+	fmt.Printf("%+v\n", claims)
 }
