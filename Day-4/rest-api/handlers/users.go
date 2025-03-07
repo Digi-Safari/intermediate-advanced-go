@@ -3,6 +3,7 @@ package handlers
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"log"
 	"log/slog"
 	"net/http"
 	"rest-api/middleware"
@@ -28,6 +29,13 @@ func (h *handler) Signup(c *gin.Context) {
 	// if you need traceId, take it out from the context
 	traceId := GetTraceIdOfRequest(c)
 
+	// Check if the size of body is more than 5KB
+	if c.Request.ContentLength > 5*1024 {
+		slog.Error("request body limit", slog.String("TraceID", traceId), slog.Int64("Size Received", c.Request.ContentLength))
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Request body too large. Limit is 5KB"})
+		return
+	}
+
 	// read the jsonBody, and put it inside the struct
 	var newUser models.NewUser
 	err := c.ShouldBindJSON(&newUser)
@@ -38,7 +46,7 @@ func (h *handler) Signup(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
+	log.Println(newUser)
 	err = h.validate.Struct(newUser)
 	if err != nil {
 		slog.Error("json validation error", slog.String("TraceID", traceId),

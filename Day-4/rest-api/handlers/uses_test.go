@@ -12,6 +12,7 @@ import (
 	"rest-api/middleware"
 	"rest-api/models"
 	"rest-api/models/mockmodels"
+	"strings"
 	"testing"
 )
 
@@ -54,6 +55,30 @@ func TestSignup(t *testing.T) {
 			expectedResponse: `{"id":"ab49a45c-ec2c-47a5-8675-9f072e2d9216","email":"d@email.com","name":"John Doe","age":30,"password_hash":"2a$10$EimVQRw4YiKIoMqh3JMwOesA9ngPGZT.chFEmPSaHzYl.mlnhLr12"}`,
 			mockStore: func(m *mockmodels.MockService) {
 				m.EXPECT().CreateUser(gomock.Eq(newUser)).Return(mockUser, nil).Times(1)
+			},
+		},
+		{
+			name: "Fail_NoEmail",
+			body: []byte(`{
+  						"Name": "John Doe",
+  						"Age": 30,
+  						"Password": "abc"
+  				}`),
+			expectedStatus:   http.StatusBadRequest,
+			expectedResponse: `{"error":"Key: 'NewUser.Email' Error:Field validation for 'Email' failed on the 'required' tag"}`,
+
+			mockStore: func(m *mockmodels.MockService) {
+				m.EXPECT().CreateUser(gomock.Any()).Times(0)
+			},
+		},
+		{
+			name:             "Fail_LargeContentLength",
+			body:             []byte(strings.Repeat("a", 6*1024)), // JSON string larger than 5KB
+			expectedStatus:   http.StatusBadRequest,
+			expectedResponse: `{"error":"Request body too large. Limit is 5KB"}`,
+			//a function setting up an expectation on a mock service
+			mockStore: func(m *mockmodels.MockService) {
+				m.EXPECT().CreateUser(gomock.Any()).Times(0)
 			},
 		},
 	}
