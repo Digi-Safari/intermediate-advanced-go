@@ -14,15 +14,20 @@ func API(a *auth.Auth, conn models.Conn) (*gin.Engine, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// injecting dependencies to handlers package by using a struct and adding required fields
 	h := handler{
 		conn:     conn,
 		validate: validator.New(),
 	}
+
 	r.Use(middleware.Logger())
 	r.POST("/signup", h.Signup)
 
+	// authenticate would be only applied to check
 	r.Use(m.Authenticate())
 	r.GET("/check", Check)
+	r.GET("/fetch", h.GetUser)
 	return r, nil
 }
 

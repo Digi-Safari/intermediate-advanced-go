@@ -81,3 +81,32 @@ func GetTraceIdOfRequest(c *gin.Context) string {
 	}
 	return traceId
 }
+
+func (h *handler) GetUser(c *gin.Context) {
+	traceId := GetTraceIdOfRequest(c)
+
+	// Fetch the user_id from the url parameters
+	userEmail := c.Query("user_email")
+
+	err := h.validate.Var(userEmail, "required,email")
+	if err != nil {
+		slog.Error("invalid email", slog.String("TraceID", traceId),
+			slog.String("Error", err.Error()))
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": "Invalid or missing email"})
+		return
+	}
+
+	user, err := h.conn.FetchUser(userEmail)
+	if err != nil {
+		slog.Error("user not found", slog.String("TraceID", traceId),
+			slog.String("Error", err.Error()))
+
+		fetchError := gin.H{"msg": "user not found"}
+		// Respond with an StatusNotFound error code and the error message
+		c.AbortWithStatusJSON(http.StatusNotFound, fetchError)
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
+
+}

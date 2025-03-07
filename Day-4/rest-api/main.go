@@ -43,7 +43,8 @@ func startApp() error {
 	if err != nil {
 		return err
 	}
-	_ = a // this needs to be changed
+
+	// passing the required dependencies to the handlers package
 	h, err := handlers.API(a, c)
 	if err != nil {
 		return err
