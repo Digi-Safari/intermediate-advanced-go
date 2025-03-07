@@ -10,7 +10,7 @@ import (
 
 // function names must start with word Test to signal it is a test
 // helper functions could be present in this file
-// that would not be part of test so the would not start with the word Test
+// that would not be part of test so this would not start with the word Test
 func TestSumInt(t *testing.T) {
 	// Figure out two things
 	// What are inputs (parameters)
@@ -58,6 +58,7 @@ func TestTableTestSumInt(t *testing.T) {
 			input: nil,
 			want:  0,
 		},
+		//add more test cases here
 	}
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
