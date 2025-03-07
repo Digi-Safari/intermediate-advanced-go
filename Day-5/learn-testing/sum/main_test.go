@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"github.com/stretchr/testify/require"
+	"testing"
+)
 
 // add _test at the end of the fileName to make it a test file
 // go test ./... // run all the test for the project
@@ -59,9 +62,11 @@ func TestTableTestSumInt(t *testing.T) {
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
 			got := SumInt(tc.input)
-			if got != tc.want {
-				t.Fatalf("sum of %v should be %v; got %v", tc.input, tc.want, got)
-			}
+			require.Equal(t, tc.want, got)
+			//if got != tc.want {
+			//	//t.Fatalf("sum of %v should be %v; got %v", tc.input, tc.want, got)
+			//
+			//}
 		})
 
 	}
