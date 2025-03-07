@@ -1,6 +1,18 @@
 package handlers
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
+	"log/slog"
+	"net/http"
+	"rest-api/middleware"
+	"rest-api/models"
+)
+
+type handler struct {
+	conn     models.Conn
+	validate *validator.Validate
+}
 
 /*
 {
@@ -11,11 +23,61 @@ import "github.com/gin-gonic/gin"
 }
 */
 
-func Signup(c *gin.Context) {
-	// if you need traceId, take it out from the context
+func (h *handler) Signup(c *gin.Context) {
 
-	// c.ShouldBindJSON(&newUser)
+	// if you need traceId, take it out from the context
+	traceId := GetTraceIdOfRequest(c)
+
+	// read the jsonBody, and put it inside the struct
+	var newUser models.NewUser
+	err := c.ShouldBindJSON(&newUser)
+	if err != nil {
+		slog.Error("json validation error", slog.String("TraceID", traceId),
+			slog.String("Error", err.Error()))
+
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	err = h.validate.Struct(newUser)
+	if err != nil {
+		slog.Error("json validation error", slog.String("TraceID", traceId),
+			slog.String("Error", err.Error()))
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	//json.NewDecoder(c.Request.Body).Decode(&newUser)
+	//
+	//conn := models.NewConn() // not the way to Go
+	usr, err := h.conn.CreateUser(newUser)
+	if err != nil {
+		slog.Error("error in creating the user", slog.String("TraceID", traceId),
+			slog.String("Error", err.Error()))
+		c.AbortWithStatusJSON(http.StatusInternalServerError, err.Error())
+		return
+	}
 	// call the models create user , for now skip validation
 
 	// send the success response
+	// Respond with user data
+	c.JSON(http.StatusOK, usr)
+}
+
+func GetTraceIdOfRequest(c *gin.Context) string {
+
+	// We get the current request context
+	ctx := c.Request.Context()
+
+	// Extract the traceId from the request context
+	// We assert the type to string since context.Value returns an interface{}
+	traceId, ok := ctx.Value(middleware.TraceIdKey).(string)
+
+	// If traceId not present then log the error and return an error message
+	// ok is false if the type assertion was not successful
+	if !ok {
+		slog.Error("trace id not present in the context")
+		traceId = "Unknown"
+	}
+	return traceId
 }

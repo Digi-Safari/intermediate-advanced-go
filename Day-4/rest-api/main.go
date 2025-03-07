@@ -10,6 +10,7 @@ import (
 	"os/signal"
 	"rest-api/auth"
 	"rest-api/handlers"
+	"rest-api/models"
 	"time"
 )
 
@@ -30,6 +31,8 @@ func startApp() error {
 	if err != nil {
 		return fmt.Errorf("reading auth public key %w", err)
 	}
+	//----------- Initialize cache support
+	c := models.NewConn()
 
 	publicKey, err := jwt.ParseRSAPublicKeyFromPEM(publicPEM)
 	if err != nil {
@@ -41,7 +44,7 @@ func startApp() error {
 		return err
 	}
 	_ = a // this needs to be changed
-	h, err := handlers.API(a)
+	h, err := handlers.API(a, c)
 	if err != nil {
 		return err
 	}
