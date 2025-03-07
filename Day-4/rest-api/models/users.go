@@ -13,6 +13,10 @@ type Conn struct {
 	//db *sql.DB
 }
 
+func NewConn() Conn {
+	return Conn{store: make(map[string]User, 100)}
+}
+
 func (c *Conn) CreateUser(n NewUser) (User, error) {
 	passHash, err := bcrypt.GenerateFromPassword([]byte(n.Password), bcrypt.DefaultCost)
 	if err != nil {
