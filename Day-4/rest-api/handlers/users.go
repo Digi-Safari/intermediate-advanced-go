@@ -14,9 +14,8 @@ import "github.com/gin-gonic/gin"
 func Signup(c *gin.Context) {
 	// if you need traceId, take it out from the context
 
-	// call the models create user , for now skip validation
-
 	// c.ShouldBindJSON(&newUser)
+	// call the models create user , for now skip validation
 
 	// send the success response
 }
