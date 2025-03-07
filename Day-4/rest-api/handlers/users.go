@@ -10,7 +10,7 @@ import (
 )
 
 type handler struct {
-	conn     models.Conn
+	conn     models.Service
 	validate *validator.Validate
 }
 

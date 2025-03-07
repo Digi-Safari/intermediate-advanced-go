@@ -45,7 +45,7 @@ func startApp() error {
 	}
 
 	// passing the required dependencies to the handlers package
-	h, err := handlers.API(a, c)
+	h, err := handlers.API(a, &c)
 	if err != nil {
 		return err
 	}

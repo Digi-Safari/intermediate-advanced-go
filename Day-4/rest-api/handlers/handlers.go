@@ -8,7 +8,7 @@ import (
 	"rest-api/models"
 )
 
-func API(a *auth.Auth, conn models.Conn) (*gin.Engine, error) {
+func API(a *auth.Auth, conn models.Service) (*gin.Engine, error) {
 	r := gin.New()
 	m, err := middleware.NewMid(a)
 	if err != nil {
