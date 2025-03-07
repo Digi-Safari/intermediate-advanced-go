@@ -36,3 +36,5 @@ func BenchmarkOptimizedAnalyzeText(b *testing.B) {
 // list AnalyzeText
 // top 5
 // weblist AnalyzeText // to see ui version of the report
+
+//go tool pprof -http=:8080 p.out
