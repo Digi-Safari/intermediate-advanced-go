@@ -28,18 +28,25 @@ func main() {
 	// iat (issued at time): Time at which the JWT was issued; can be used to determine age of the JWT
 	// jti (JWT ID): Unique identifier; can be used to prevent the JWT from being replayed (allows a token to be used only once)
 
-	claims := struct {
-		jwt.RegisteredClaims
-		Roles []string `json:"roles"`
-	}{
-		RegisteredClaims: jwt.RegisteredClaims{
+	//claims := struct {
+	//	jwt.RegisteredClaims
+	//	Roles []string `json:"roles"`
+	//}{
+	//	RegisteredClaims: jwt.RegisteredClaims{
+	//
+	//		Issuer:    "api project",
+	//		Subject:   "101",
+	//		ExpiresAt: jwt.NewNumericDate(time.Now().Add(50 * time.Minute)),
+	//		IssuedAt:  jwt.NewNumericDate(time.Now()),
+	//	},
+	//	Roles: []string{"admin", "user"},
+	//}
 
-			Issuer:    "api project",
-			Subject:   "101",
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(50 * time.Minute)),
-			IssuedAt:  jwt.NewNumericDate(time.Now()),
-		},
-		Roles: []string{"admin", "user"},
+	claims := jwt.RegisteredClaims{
+		Issuer:    "api project",
+		Subject:   "101",
+		ExpiresAt: jwt.NewNumericDate(time.Now().Add(50 * time.Minute)),
+		IssuedAt:  jwt.NewNumericDate(time.Now()),
 	}
 
 	tkn := jwt.NewWithClaims(jwt.SigningMethodRS256, claims)

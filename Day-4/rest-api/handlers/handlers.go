@@ -2,15 +2,20 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
+	"rest-api/auth"
 	"rest-api/middleware"
 )
 
-func API() *gin.Engine {
+func API(a *auth.Auth) (*gin.Engine, error) {
 	r := gin.New()
-	r.Use(middleware.Logger())
+	m, err := middleware.NewMid(a)
+	if err != nil {
+		return nil, err
+	}
+	r.Use(middleware.Logger(), m.Authenticate())
 	r.GET("/check", Check)
 
-	return r
+	return r, nil
 }
 
 func Check(c *gin.Context) {

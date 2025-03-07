@@ -41,12 +41,16 @@ func startApp() error {
 		return err
 	}
 	_ = a // this needs to be changed
+	h, err := handlers.API(a)
+	if err != nil {
+		return err
+	}
 	api := http.Server{
 		Addr:         ":8080",
 		ReadTimeout:  8000 * time.Second,
 		WriteTimeout: 800 * time.Second,
 		IdleTimeout:  800 * time.Second,
-		Handler:      handlers.API(),
+		Handler:      h,
 	}
 
 	// channel to store any errors while setting up the service
