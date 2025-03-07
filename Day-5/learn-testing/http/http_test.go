@@ -31,10 +31,13 @@ func TestDoubleHandler(t *testing.T) {
 			// ResponseRecorder is an implementation of [http.ResponseWriter]
 			rec := httptest.NewRecorder()
 
+			// constructing the request
 			req := httptest.NewRequest(http.MethodGet, "/double?v="+tc.queryParam, nil)
 
+			// calling the actual handler function
 			doubleHandler(rec, req)
 
+			// checking if expected output matches or not
 			require.Equal(t, tc.expectedStatus, rec.Code)
 			body := rec.Body.String()
 
