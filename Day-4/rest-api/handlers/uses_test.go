@@ -64,6 +64,8 @@ func TestSignup(t *testing.T) {
 
 	//NewMockService would return the implementation of the interface
 	mockService := mockmodels.NewMockService(ctrl)
+
+	// setting the handler with the mock implementation of the interface
 	h := handler{
 		conn:     mockService,
 		validate: validator.New(),
