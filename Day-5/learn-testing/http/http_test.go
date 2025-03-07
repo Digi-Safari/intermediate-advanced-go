@@ -22,6 +22,18 @@ func TestDoubleHandler(t *testing.T) {
 			expectedStatus: http.StatusOK,
 			expectedBody:   "20",
 		},
+		{
+			name:           "Fail_MissingValue",
+			queryParam:     "", // Missing `v` parameter
+			expectedStatus: http.StatusBadRequest,
+			expectedBody:   "missing value",
+		},
+		{
+			name:           "Fail_NotANumber",
+			queryParam:     "abc", // `v` is not a number
+			expectedStatus: http.StatusBadRequest,
+			expectedBody:   "not a number: abc",
+		},
 	}
 
 	for _, tc := range tt {
