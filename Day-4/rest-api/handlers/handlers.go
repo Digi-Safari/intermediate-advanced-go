@@ -12,9 +12,11 @@ func API(a *auth.Auth) (*gin.Engine, error) {
 	if err != nil {
 		return nil, err
 	}
-	r.Use(middleware.Logger(), m.Authenticate())
-	r.GET("/check", Check)
+	r.Use(middleware.Logger())
+	r.POST("/signup", Signup)
 
+	r.Use(m.Authenticate())
+	r.GET("/check", Check)
 	return r, nil
 }
 
