@@ -18,9 +18,9 @@ func (c *Conn) CreateUser(n NewUser) (User, error) {
 	if err != nil {
 		return User{}, err
 	}
-	user := c.store[n.Email]
+	_, ok := c.store[n.Email]
 
-	if user.Email == n.Email {
+	if ok {
 		return User{}, errors.New("user already exists")
 	}
 
